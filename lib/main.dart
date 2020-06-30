@@ -1,63 +1,92 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(mainClass());
-
-
-class mainClass extends StatelessWidget {
-
-
+void main() {
+  runApp(MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: "Google books",
+      home: MainScreen()));
+}
+class MainScreen extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-
-      home: mainScreen(),
-    );
+  MainScreenState createState() => MainScreenState();
+}
+class MainScreenState extends State<MainScreen> with SingleTickerProviderStateMixin {
+  TabController controller;
+  @override
+  void initState() {
+    super.initState();
+    controller = TabController(length: 2, vsync: this);
   }
-}
-
-class mainScreen extends StatefulWidget {
-  mainScreen({Key key}) : super(key: key);
-
   @override
-  mainScreenState createState() => mainScreenState();
-}
-
-class mainScreenState extends State<mainScreen> {
-
-
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Google Книги'),
+        title: Text("Google Books"),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.find_in_page, color: Colors.white,),
+            onPressed: () {
+
+            },
+          )
+        ],
         backgroundColor: Colors.brown,
       ),
-      body: Center(
-        child: Text('Здесь будет выводится рандомный список книг с Google Books', textDirection: TextDirection.ltr,),
+
+      body:
+
+      TabBarView(
+        children: <Widget>[HomeScreen(), FavoritesScreen()],
+        controller: controller,
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.find_in_page),
-            title: Text('Поиск'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.bookmark),
-            title: Text('Избранное'),
-          ),
-        ],
-
-       // selectedItemColor: Colors.amber[800],
-
+      bottomNavigationBar: Material(
+        color: Colors.brown,
+        child: TabBar(
+          tabs: <Tab>[
+            Tab(
+                icon: Icon(Icons.home),
+                child: Text('Главная')
+            ),
+            Tab(
+              icon: Icon(Icons.favorite),
+              child: Text('Избранное'),
+            ),
+          ],
+          controller: controller,
+        ),
       ),
     );
   }
+}
+  class HomeScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+  return Scaffold(
+
+  body:
+  Center(
+  child: Text('Здесь будет выводится список книг', textDirection: TextDirection.ltr,),
+  ),
+  );
+  }
+  }
+
+  class FavoritesScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+  return Scaffold(
+
+  body:
+  Center(
+  child: Text('Здесь будет список книг избраного', textDirection: TextDirection.ltr,),
+     ),
+    );
+   }
+  }
 
 
-int _selectedIndex = 0;
-  void _onItemTapped(int index) {
-setState(() {
-_selectedIndex = index;
-});
-}
-}
