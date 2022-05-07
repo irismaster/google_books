@@ -57,42 +57,31 @@ class _BooksScreenState extends State<BooksScreen> {
       body: SafeArea(
         child: FutureBuilder<BooksModel>(
           future: booksObject,
-          builder: (context, /*AsyncSnapshot<BooksModel>*/ snapshot) {
-            if (snapshot.connectionState == ConnectionState.done){
-              log(snapshot.toString()/*items![0].volumeInfo.title*/);
-             if (snapshot.hasData) {
-
-               if (snapshot.data != null){
-                 return Column(
-                   children: <Widget>[
-                     const SizedBox(
-                       height: 50.0,
-                     ),
-                     ListBooksView(snapshot: snapshot),
-                   ],
-                 );
-               } else {
-                 return const Text('Is Null');
-               }
-             } else {
-               return const Text('No Data found');
-             }
+          builder: (context, AsyncSnapshot<BooksModel> snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              log(snapshot.toString() /*items![0].volumeInfo.title*/);
+              if (snapshot.hasData) {
+                if (snapshot.data != null) {
+                  return Column(
+                    children: <Widget>[
+                      const SizedBox(
+                        height: 50.0,
+                      ),
+                      ListBooksView(snapshot: snapshot),
+                    ],
+                  );
+                } else {
+                  return const Text('Is Null');
+                }
+              } else {
+                return const Text('No Data found');
+              }
             } else {
               return const Center(child: CircularProgressIndicator());
             }
-            //return Container();
-           // throw 'Data is null!!!';
           },
         ),
       ),
     );
   }
 }
-
-/* if (snapshot.hasData) {
-              return  ListBooksView(snapshot: snapshot);
-            } else {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }*/
